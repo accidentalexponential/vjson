@@ -1,4 +1,4 @@
-module github.com/miladibra10/vjson
+module github.com/accidentalexponential/vjson
 
 go 1.15
 
