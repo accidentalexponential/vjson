@@ -1,10 +1,11 @@
 package vjson
 
 import (
-	"github.com/hashicorp/go-multierror"
-	"github.com/pkg/errors"
 	"regexp"
 	"strings"
+
+	"github.com/hashicorp/go-multierror"
+	"github.com/pkg/errors"
 )
 
 // StringField is the type for validating strings in a JSON
@@ -31,6 +32,16 @@ var _ Field = (*StringField)(nil)
 // GetName returns name of the field
 func (s *StringField) GetName() string {
 	return s.name
+}
+
+// GetType returns the Fields type
+func (s *StringField) GetType() string {
+	return "string"
+}
+
+// GetRequired returns true if field is required
+func (s *StringField) GetRequired() bool {
+	return s.required
 }
 
 // Required is called to make a field required in a JSON

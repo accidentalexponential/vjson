@@ -2,9 +2,10 @@ package vjson
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 type intRange struct {
@@ -36,6 +37,16 @@ var _ Field = (*IntegerField)(nil)
 // GetName returns name of the field
 func (i *IntegerField) GetName() string {
 	return i.name
+}
+
+// GetType returns the Fields type
+func (i *IntegerField) GetType() string {
+	return "integer"
+}
+
+// GetRequired returns true if field is required
+func (i *IntegerField) GetRequired() bool {
+	return i.required
 }
 
 // Validate is used for validating a value. it returns an error if the value is invalid.

@@ -18,6 +18,16 @@ func (b *BooleanField) GetName() string {
 	return b.name
 }
 
+// GetType returns the Fields type
+func (b *BooleanField) GetType() string {
+	return "boolean"
+}
+
+// GetRequired returns true if field is required
+func (b *BooleanField) GetRequired() bool {
+	return b.required
+}
+
 // Validate is used for validating a value. it returns an error if the value is invalid.
 func (b *BooleanField) Validate(v interface{}) error {
 	if v == nil {

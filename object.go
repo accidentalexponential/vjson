@@ -2,6 +2,7 @@ package vjson
 
 import (
 	"encoding/json"
+
 	"github.com/pkg/errors"
 )
 
@@ -18,6 +19,16 @@ var _ Field = (*ObjectField)(nil)
 // GetName returns name of the field
 func (o *ObjectField) GetName() string {
 	return o.name
+}
+
+// GetType returns the Fields type
+func (o *ObjectField) GetType() string {
+	return "object"
+}
+
+// GetRequired returns true if field is required
+func (o *ObjectField) GetRequired() bool {
+	return o.required
 }
 
 // Validate is used for validating a value. it returns an error if the value is invalid.

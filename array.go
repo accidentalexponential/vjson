@@ -26,6 +26,16 @@ func (a *ArrayField) GetName() string {
 	return a.name
 }
 
+// GetType returns the Fields type
+func (a *ArrayField) GetType() string {
+	return "array"
+}
+
+// GetRequired returns true if field is required
+func (a *ArrayField) GetRequired() bool {
+	return a.required
+}
+
 // Validate is used for validating a value. it returns an error if the value is invalid.
 func (a *ArrayField) Validate(v interface{}) error {
 	if v == nil {

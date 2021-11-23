@@ -15,6 +15,16 @@ func (n *NullField) GetName() string {
 	return n.name
 }
 
+// GetType returns the Fields type
+func (n *NullField) GetType() string {
+	return "null"
+}
+
+// GetRequired returns true if field is required
+func (n *NullField) GetRequired() bool {
+	return false
+}
+
 // Validate is used for validating a value. it returns an error if the value is invalid.
 func (n *NullField) Validate(input interface{}) error {
 	if input == nil {

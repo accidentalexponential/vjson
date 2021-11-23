@@ -2,9 +2,10 @@ package vjson
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 type floatRange struct {
@@ -33,9 +34,19 @@ type FloatField struct {
 // To Force Implementing Field interface by IntegerField
 var _ Field = (*FloatField)(nil)
 
-// GetName returns name of the field
+// GetName returns true if field is required
 func (f *FloatField) GetName() string {
 	return f.name
+}
+
+// GetType returns the Fields type
+func (f *FloatField) GetType() string {
+	return "float"
+}
+
+// GetRequired returns the Fields type
+func (f *FloatField) GetRequired() bool {
+	return f.required
 }
 
 // Validate is used for validating a value. it returns an error if the value is invalid.
