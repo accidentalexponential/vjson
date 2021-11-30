@@ -2,12 +2,13 @@ package vjson
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"os"
+
 	"github.com/hashicorp/go-multierror"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
 	"github.com/tidwall/gjson"
-	"io/ioutil"
-	"os"
 )
 
 // Schema is the type for declaring a JSON schema and validating a json object.
@@ -20,6 +21,25 @@ type SchemaSpec struct {
 	Fields []map[string]interface{} `json:"fields"`
 }
 
+// Schema parses a SchemaSpec into a Schema
+func (spec SchemaSpec) Schema() (schema *Schema, result error) {
+	schema = &Schema{}
+	schema.Fields = make([]Field, 0, len(spec.Fields))
+
+	for _, fieldSpec := range spec.Fields {
+		field, err := schema.getField(fieldSpec)
+		if err != nil {
+			result = multierror.Append(result, err)
+			continue
+		}
+		schema.Fields = append(schema.Fields, field)
+	}
+	if result != nil {
+		return nil, result
+	}
+	return schema, nil
+}
+
 // UnmarshalJSON is implemented for parsing a Schema. it overrides json.Unmarshal behaviour.
 func (s *Schema) UnmarshalJSON(bytes []byte) error {
 	var schemaSpec SchemaSpec
@@ -27,18 +47,8 @@ func (s *Schema) UnmarshalJSON(bytes []byte) error {
 	if err != nil {
 		return errors.Wrap(err, "could not unmarshal to SchemaSpec")
 	}
-	s.Fields = make([]Field, 0, len(schemaSpec.Fields))
 
-	var result error
-
-	for _, fieldSpec := range schemaSpec.Fields {
-		field, err := s.getField(fieldSpec)
-		if err != nil {
-			result = multierror.Append(result, err)
-			continue
-		}
-		s.Fields = append(s.Fields, field)
-	}
+	s, result := schemaSpec.Schema()
 
 	return result
 }
